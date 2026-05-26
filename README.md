@@ -35,3 +35,6 @@ install.packages(c(
   "ggplot2", "reshape2", "gridExtra", "FSelector", "Boruta",
   "randomForest", "pROC", "ggrepel", "Hmisc", "energy", "knitr"
 ))
+
+## Nota
+En el script principal (`Codigo_TFG_metodos.R`), los experimentos se lanzan seleccionando el conjunto de datos deseado en la lista datasets_prueba. Para obtener los resultados del trabajo se ejecutó el script para los distintos conjuntos de datos considerados.

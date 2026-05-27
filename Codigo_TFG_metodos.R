@@ -6,9 +6,6 @@
 #   - Compararlo con Naive Bayes clásico y métodos de selección de variables.
 #   - Generar tablas y figuras para el Capítulo 4.
 # ============================================================
-# Ídem código pero he cambiado lo de discretizar para que no haya 
-# data leackaege y también he cambiado que ahora reentreno en train + valid
-
 # Cargamos los datos
 # https://archive.ics.uci.edu/
 # install.packages("ucimlrepo")
@@ -51,7 +48,11 @@ datos_waveform <- data.frame(
 )
 colnames(datos_waveform) <- c(paste0("X", 1:40), "Class")
 
-# 5) Page Blocks
+# 5) Statlog Australian Credit
+datos_australian <- cargar_uci(143)
+
+# BD DESBALANCEADAS
+# 6) Page Blocks
 datos_page <- cargar_uci(78)
 # Por seguir el artículo:
 datos_page$Class <- ifelse(datos_page$Class == 1, "Negative", "Positive")
@@ -59,25 +60,11 @@ datos_page$Class <- as.factor(datos_page$Class)
 
 round(100 * prop.table(table(datos_page$Class)), 2)
 
-
-# 6) German Credit
-datos_german <- cargar_uci(144)
-
-# 7) SPECTF Heart
-datos_spectf <- cargar_uci(96)
-
-# 8) Statlog Australian Credit
-datos_australian <- cargar_uci(143)
-
-# EXTRA: DATOS SPAMBASE
-datos_spam <- cargar_uci(94)
-
-# EXTRA BD DESBALANCEADAS
-# Indian Liver Patient Dataset
+# 7) Indian Liver Patient Dataset (IDLP)
 datos_IDLP <- cargar_uci(225) 
 datos_IDLP <- datos_IDLP[, !names(datos_IDLP) %in% "A/G Ratio", drop = FALSE]
 
-# Online Shoppers Purchasing Intention Dataset
+# 8) Online Shoppers Purchasing Intention Dataset (Shoppers)
 datos_shoppers <- cargar_uci(468)
 
 
@@ -112,14 +99,12 @@ dir.create("resultados_v2", showWarnings = FALSE)
 dir.create("resultados_v2/tablas", showWarnings = FALSE, recursive = TRUE)
 dir.create("resultados_v2/figuras", showWarnings = FALSE, recursive = TRUE)
 
-
 # Fijo semilla para reproducibilidad (Ej: será útil pq por ej  metemos aleatoriedad con CV)
 set.seed(123)
 
 # ------------------------------------------------------------
 # 1) Funciones auxiliares generales
 # ------------------------------------------------------------
-
 # 1) Preparar dataset
 # Esta función sirve para que todos los datasets tengan la misma estructura antes de aplicar los métodos:
 # Colocamos la variable objetivo en la primera columna, le llamamos Class y la convertimos en tipo factor (así no probelmas
@@ -719,7 +704,7 @@ fit_sparse_nb_fold <- function(train, valid, test,
 # Vamos a crear una función para cada uno de ellos que me devuelva los resultados para un fold
 
 # NB, CFS y Boruta sí venían en el artículo explicados con qué librerías se implementan, sin embargo, SNB y SNB(MAP) no.
-# Nosotros hemos implementado ene ste trabajo el algoritmo de SNB, para cpoder compararnos con un método más. 
+# Nosotros hemos implementado en este trabajo el algoritmo de SNB, para poder compararnos con un método más. 
 
 # ------------------------------------------------------------
 # 7.1) Naive Bayes clásico
